@@ -14,4 +14,14 @@ class Movie extends Model
     return $this->belongsTo(User::class);
 }
 
+public function ratings()
+{
+    return $this->hasMany(Rating::class);
+}
+
+public function averageRating()
+{
+    return $this->ratings()->avg('rating');
+}
+
 }
