@@ -50,14 +50,14 @@ class MovieController extends Controller
                 "data" => $validator->errors()->all()
             ]);
         }
-
-        $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+  // Store the thumbnail and retrieve the path
+  $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
 
         $movie = Movie::create([
             "user_id" => $request->user_id, // Include user_id,
             "title" => $request->title,
             "description" => $request->description,
-            "thumbnail" => $thumbnailPath, // Store the path of the uploaded file
+            'thumbnail' => $thumbnailPath,
             "release_date" => $request->release_date,
             "genre" => $request->genre,
 
@@ -122,4 +122,35 @@ class MovieController extends Controller
         ]);
 
     }
+    public function search(Request $request)
+    {
+
+    $request->validate([
+        'title' => 'string|nullable',
+        'genre' => 'string|nullable',
+    ]);
+
+    $query = Movie::query();
+
+    if ($request->has('title')) {
+        $query->where('title', 'like', '%' . $request->title . '%');
+    }
+
+    if ($request->has('genre')) {
+        $query->where('genre', 'like', '%' . $request->genre . '%');
+    }
+
+    $movies = $query->get();
+
+
+    if ($movies->isEmpty()) {
+        return response()->json(['message' => 'No movies found'], 404);
+    }
+
+    return response()->json($movies);
+
+
 }
+
+    }
+

@@ -18,10 +18,11 @@ Route::post("login", [AuthController::class, "login"]);
 // Allow unauthorized access to fetch movies
 Route::get('review', [ReviewController::class, 'free']);
 Route::get('movie', [MovieController::class, 'free']);
-
+Route::middleware('auth:api')->get('movies/search', [MovieController::class, 'search']);
 Route::middleware("auth:api")->group(function(){
     Route::post('movies/{movie}/ratings', [RatingController::class, 'store']);
     Route::get('movies/{movie}/ratings', [RatingController::class, 'show']);
+
     Route::apiResource("movies", MovieController::class);
     Route::apiResource("reviews", ReviewController::class);
 });
