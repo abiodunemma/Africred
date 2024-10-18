@@ -24,12 +24,13 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+         "user_id" => "required|exists:users,id",
             "title" =>"required",
             "description" => "required",
-            "thumbnail" => "required",
+            "thumbnail" => "required|file|image|max:2048",
             "release_date" => "required",
              "genre" => "required"
-           
+
         ]);
 
         if ($validator->fails()) {
@@ -39,10 +40,14 @@ class MovieController extends Controller
                 "data" => $validator->errors()->all()
             ]);
         }
+
+        $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+
         $movie = Movie::create([
+            "user_id" => $request->user_id, // Include user_id,
             "title" => $request->title,
             "description" => $request->description,
-            "thumbnail" => $request->thumbnail,
+            "thumbnail" => $thumbnailPath, // Store the path of the uploaded file
             "release_date" => $request->release_date,
             "genre" => $request->genre,
 
@@ -72,7 +77,7 @@ class MovieController extends Controller
             "thumbnail" => "required",
             "release_date" => "required",
              "genre" => "required"
-           
+
         ]);
 
         if ($validator->fails()) {
