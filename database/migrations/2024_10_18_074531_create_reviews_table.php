@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // Optional: set up foreign key
             $table->unsignedBigInteger('movie_id'); // Add user_id column
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade'); // Optional: set up foreign key
-            $table->string('ratings');
+            $table->integer('ratings');
             $table->string('comments');
             $table->timestamps();
         });
