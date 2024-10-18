@@ -13,7 +13,10 @@ Route::get('/user', function (Request $request) {
 
 Route::post("register", [AuthController::class, "register"]);
 Route::post("login", [AuthController::class, "login"]);
-Route::get("movies", [AuthController::class, "movie"]);
+
+// Allow unauthorized access to fetch movies
+Route::get('review', [ReviewController::class, 'free']);
+Route::get('movie', [MovieController::class, 'free']);
 
 Route::middleware("auth:api")->group(function(){
     Route::apiResource("movies", MovieController::class);

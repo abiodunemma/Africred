@@ -10,6 +10,16 @@ use Auth;
 
 class MovieController extends Controller
 {
+    public function free(Request $request){
+        $movie = Movie::paginate(5);
+
+        return response()->json([
+            "status" => 1,
+            "message" => "review output",
+            "data" => $movie
+        ]);
+    }
+
     public function index(Request $request)
     {
         $movies = Movie::paginate(5);

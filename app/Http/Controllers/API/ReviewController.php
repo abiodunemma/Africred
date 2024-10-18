@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
+    public function free(Request $request){
+        $reviews = Review::paginate(5);
+
+        return response()->json([
+            "status" => 1,
+            "message" => "review output",
+            "data" => $reviews
+        ]);
+    }
+
     public function index(Request $request){
         $reviews = Review::paginate(5);
 
